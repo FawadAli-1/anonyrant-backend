@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Define the reaction types as an enum
+enum ReactionType {
+  EMPATHY
+  SUPPORT
+  HUG
+  ANGRY
+  SAD
+}
+
+// Main Rant model
+model Rant {
+  id        String   @id @default(cuid())
+  title     String
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  
+  // Anonymous user identifier (could be a session ID or fingerprint)
+  anonymousId String
+  
+  // Relations
+  comments   Comment[]
+  reactions  Reaction[]
+
+  @@index([createdAt]) // Index for sorting by creation date
+}
+
+// Comment model
+model Comment {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  
+  // Anonymous user identifier
+  anonymousId String
+  
+  // Relation to Rant
+  rantId    String
+  rant      Rant     @relation(fields: [rantId], references: [id], onDelete: Cascade)
+
+  @@index([rantId, createdAt])
+}
+
+// Reaction model
+model Reaction {
+  id        String       @id @default(cuid())
+  type      ReactionType
+  createdAt DateTime     @default(now())
+  
+  // Anonymous user identifier
+  anonymousId String
+  
+  // Relation to Rant
+  rantId    String
+  rant      Rant        @relation(fields: [rantId], references: [id], onDelete: Cascade)
+
+  // Ensure one user can only react once with each type per rant
+  @@unique([rantId, anonymousId, type])
+  @@index([rantId, type])
+}
+        
