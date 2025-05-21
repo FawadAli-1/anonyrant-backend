@@ -29,12 +29,12 @@ export class CommentsService {
     // First check if the rant exists and is from today
     const { today, tomorrow } = this.getTodayRange();
     const rant = await this.prisma.rant.findFirst({
-      where: {
+      where: { 
         id: data.rant.connect.id,
         createdAt: {
           gte: today,
           lt: tomorrow,
-        },
+        }
       },
     });
 
@@ -47,8 +47,8 @@ export class CommentsService {
         content: data.content,
         anonymousId: data.anonymousId,
         rant: {
-          connect: { id: data.rant.connect.id },
-        },
+          connect: { id: data.rant.connect.id }
+        }
       },
       include: {
         rant: true,
@@ -65,7 +65,7 @@ export class CommentsService {
         createdAt: {
           gte: today,
           lt: tomorrow,
-        },
+        }
       },
       skip,
       take,
@@ -79,12 +79,12 @@ export class CommentsService {
     const { today, tomorrow } = this.getTodayRange();
 
     const comment = await this.prisma.comment.findFirst({
-      where: {
+      where: { 
         id,
         createdAt: {
           gte: today,
           lt: tomorrow,
-        },
+        }
       },
     });
 
@@ -96,4 +96,4 @@ export class CommentsService {
       where: { id },
     });
   }
-}
+} 

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { ReactionType } from '@prisma/client';
+import { Prisma, ReactionType } from '@prisma/client';
 
 @Injectable()
 export class ReactionsService {
@@ -26,12 +26,12 @@ export class ReactionsService {
 
     // First check if the rant exists and is from today
     const rant = await this.prisma.rant.findFirst({
-      where: {
+      where: { 
         id: data.rantId,
         createdAt: {
           gte: today,
           lt: tomorrow,
-        },
+        }
       },
     });
 
@@ -48,7 +48,7 @@ export class ReactionsService {
         createdAt: {
           gte: today,
           lt: tomorrow,
-        },
+        }
       },
     });
 
@@ -81,9 +81,9 @@ export class ReactionsService {
         createdAt: {
           gte: today,
           lt: tomorrow,
-        },
+        }
       },
       _count: true,
     });
   }
-}
+} 

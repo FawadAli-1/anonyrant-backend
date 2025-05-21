@@ -1,14 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  Delete,
-  Query,
-  NotFoundException,
-  ForbiddenException,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Query, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { RantsService } from './rants.service';
 import { CreateRantDto } from './dto/create-rant.dto';
 import { SearchRantsDto } from './dto/search-rants.dto';
@@ -46,20 +36,15 @@ export class RantsController {
   }
 
   @Delete(':id')
-  async delete(
-    @Param('id') id: string,
-    @Query('anonymousId') anonymousId: string,
-  ) {
+  async delete(@Param('id') id: string, @Query('anonymousId') anonymousId: string) {
     if (!anonymousId) {
       throw new ForbiddenException('Anonymous ID is required');
     }
 
     const result = await this.rantsService.delete(id, anonymousId);
     if (!result) {
-      throw new NotFoundException(
-        'Rant not found or you are not authorized to delete it',
-      );
+      throw new NotFoundException('Rant not found or you are not authorized to delete it');
     }
     return result;
   }
-}
+} 

@@ -13,4 +13,4 @@ export class CreateReactionDto {
   @IsString()
   @IsNotEmpty()
   rantId: string;
-}
+} 

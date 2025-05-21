@@ -9,4 +9,4 @@ import { PrismaModule } from '../prisma/prisma.module';
   providers: [ReactionsService],
   exports: [ReactionsService],
 })
-export class ReactionsModule {}
+export class ReactionsModule {} 
