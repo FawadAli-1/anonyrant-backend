@@ -7,10 +7,12 @@ async function bootstrap() {
 
   // Configure CORS
   app.enableCors({
-    origin: process.env.NODE_ENV === 'production' 
-      ? true // Allow any origin in production
-      : ['http://localhost:3000', 'http://localhost:3001'], // Allow local development
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    origin: [
+      'https://anonyrant.vercel.app',    // Production frontend
+      'http://localhost:3000',           // Local development frontend
+      'http://localhost:3001'            // Alternative local port
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
   });
