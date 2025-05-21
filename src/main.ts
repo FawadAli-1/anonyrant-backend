@@ -1,47 +1,22 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { HttpExceptionFilter } from './filters/http-exception.filter';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    cors: false // Disable default CORS to configure it manually
-  });
+  const app = await NestFactory.create(AppModule);
 
   // Configure CORS
   app.enableCors({
-    origin: [
-      'https://anonyrant.vercel.app',     // Production frontend
-      'http://localhost:3000',            // Local development frontend
-      'http://localhost:3001',            // Alternative local port
-      /\.vercel\.app$/                    // All Vercel preview deployments
-    ],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: [
-      'Origin',
-      'X-Requested-With',
-      'Content-Type',
-      'Accept',
-      'Authorization',
-      'Access-Control-Allow-Origin',
-      'Access-Control-Allow-Headers',
-      'Access-Control-Request-Method',
-      'Access-Control-Request-Headers'
-    ],
-    exposedHeaders: [
-      'Access-Control-Allow-Origin',
-      'Access-Control-Allow-Headers'
-    ],
+    origin: process.env.NODE_ENV === 'production' 
+      ? true // Allow any origin in production
+      : ['http://localhost:3000', 'http://localhost:3001'], // Allow local development
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
-    preflightContinue: false,
-    optionsSuccessStatus: 204
   });
 
   // Add global prefix
   app.setGlobalPrefix('api');
-
-  // Add global exception filter
-  app.useGlobalFilters(new HttpExceptionFilter());
 
   // Add global validation pipe
   app.useGlobalPipes(
@@ -57,9 +32,7 @@ async function bootstrap() {
 
   // Use port from environment variable or fallback to 3000
   const port = process.env.PORT || 3000;
-  
-  // Listen on all network interfaces
-  await app.listen(port, '0.0.0.0');
+  await app.listen(port);
   console.log(`Server running on port ${port}`);
 }
 bootstrap();
