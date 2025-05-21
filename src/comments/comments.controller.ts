@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Param, Delete, Query, NotFoundException, ForbiddenException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Query,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
@@ -13,8 +23,8 @@ export class CommentsController {
     return this.commentsService.create({
       ...data,
       rant: {
-        connect: { id: rantId }
-      }
+        connect: { id: rantId },
+      },
     });
   }
 
@@ -28,15 +38,20 @@ export class CommentsController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string, @Query('anonymousId') anonymousId: string) {
+  async delete(
+    @Param('id') id: string,
+    @Query('anonymousId') anonymousId: string,
+  ) {
     if (!anonymousId) {
       throw new ForbiddenException('Anonymous ID is required');
     }
 
     const result = await this.commentsService.delete(id, anonymousId);
     if (!result) {
-      throw new NotFoundException('Comment not found or you are not authorized to delete it');
+      throw new NotFoundException(
+        'Comment not found or you are not authorized to delete it',
+      );
     }
     return result;
   }
-} 
+}

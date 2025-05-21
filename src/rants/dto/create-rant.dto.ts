@@ -17,4 +17,4 @@ export class CreateRantDto {
   @IsNotEmpty()
   @MinLength(5, { message: 'Anonymous ID must be at least 5 characters long' })
   anonymousId: string;
-} 
+}

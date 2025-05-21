@@ -15,4 +15,4 @@ export class ReactionsController {
   getReactionsByRantId(@Param('rantId') rantId: string) {
     return this.reactionsService.getReactionsByRantId(rantId);
   }
-} 
+}

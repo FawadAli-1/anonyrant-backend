@@ -25,4 +25,4 @@ export class SearchRantsDto {
   @IsOptional()
   @IsString()
   take?: string;
-} 
+}

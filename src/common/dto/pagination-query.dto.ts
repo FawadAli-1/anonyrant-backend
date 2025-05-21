@@ -14,4 +14,4 @@ export class PaginationQueryDto {
   @Min(1)
   @Max(50)
   take?: number;
-} 
+}

@@ -15,4 +15,4 @@ export class CreateCommentDto {
   @IsString()
   @IsNotEmpty()
   rantId: string;
-} 
+}

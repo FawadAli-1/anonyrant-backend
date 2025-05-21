@@ -1,6 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma, ReactionType } from '@prisma/client';
+import { Prisma } from '@prisma/client';
+import { CreateRantDto } from './dto/create-rant.dto';
 import { SearchRantsDto } from './dto/search-rants.dto';
 import { Cron } from '@nestjs/schedule';
 
@@ -68,7 +69,7 @@ export class RantsService implements OnModuleInit {
         lt: tomorrow,
       },
     };
-    
+
     // Add search condition if search term is provided
     if (search) {
       where.OR = [
@@ -88,7 +89,7 @@ export class RantsService implements OnModuleInit {
 
     // Build orderBy based on sortBy parameter
     let orderBy: Prisma.RantOrderByWithRelationInput = {};
-    
+
     switch (sortBy) {
       case 'reactions':
         orderBy = {
@@ -126,7 +127,7 @@ export class RantsService implements OnModuleInit {
     const { today, tomorrow } = this.getTodayRange();
 
     return this.prisma.rant.findFirst({
-      where: { 
+      where: {
         id,
         createdAt: {
           gte: today,
@@ -152,15 +153,15 @@ export class RantsService implements OnModuleInit {
         },
       },
     });
-    
+
     // If no rants exist, return null
     if (count === 0) {
       return null;
     }
-    
+
     // Generate random skip value
     const skip = Math.floor(Math.random() * count);
-    
+
     // Get random rant
     const [rant] = await this.prisma.rant.findMany({
       where: {
@@ -176,7 +177,7 @@ export class RantsService implements OnModuleInit {
         comments: true,
       },
     });
-    
+
     return rant;
   }
 
@@ -184,7 +185,7 @@ export class RantsService implements OnModuleInit {
     const { today, tomorrow } = this.getTodayRange();
 
     const rant = await this.prisma.rant.findFirst({
-      where: { 
+      where: {
         id,
         createdAt: {
           gte: today,
@@ -201,4 +202,4 @@ export class RantsService implements OnModuleInit {
       where: { id },
     });
   }
-} 
+}
