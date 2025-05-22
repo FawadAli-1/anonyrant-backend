@@ -9,7 +9,7 @@ async function bootstrap() {
         "http://localhost:3000",
         "https://anonyrant.vercel.app"
       ],
-      methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+      methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', "OPTIONS"],
       credentials: true,
       allowedHeaders: "Access-Control-Allow-Origin"
     }
